@@ -71,7 +71,8 @@ function dumpPajek(filepath, nodes, transaction) {
     str += '*arcs\n'
     str += transaction.reduce(
         (acc, curr, index) =>
-            acc + `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)}\n`
+            acc + `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)}\n`,
+        ''
     )
 
     fs.writeFileSync(filepath, str)
