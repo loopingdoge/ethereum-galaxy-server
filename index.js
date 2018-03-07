@@ -77,23 +77,25 @@ async function main() {
     const targetIds = minifiedTransactions.map(t => t.target)
     const nodeIds = _.uniq(_.compact(_.union(sourceIds, targetIds)))
 
-    const nodeBalancesPromises = nodeIds.map(id =>
-        web3.eth.getBalance(id).catch(err => {
-            // console.log(`Error in getBalance(${id}):`, err)
-            return null
-        })
-    )
+    // const nodeBalancesPromises = nodeIds.map(id =>
+    //     web3.eth.getBalance(id).catch(err => {
+    //         // console.log(`Error in getBalance(${id}):`, err)
+    //         return null
+    //     })
+    // )
 
-    const nodeBalances = await Promise.all(nodeBalancesPromises)
-    const cleanNodeBalances = _.compact(nodeBalances)
-    const nodeBalancesInEther = cleanNodeBalances.map(b =>
-        web3.utils.fromWei(b)
-    )
+    // const nodeBalances = await Promise.all(nodeBalancesPromises)
+    // const cleanNodeBalances = _.compact(nodeBalances)
+    // const nodeBalancesInEther = cleanNodeBalances.map(b =>
+    //     web3.utils.fromWei(b)
+    // )
 
-    const nodes = _.zipWith(nodeIds, nodeBalancesInEther, (id, balance) => ({
-        id,
-        balance
-    }))
+    // const nodes = _.zipWith(nodeIds, nodeBalancesInEther, (id, balance) => ({
+    //     id,
+    //     balance
+    // }))
+
+    const nodes = nodeIds.map(id => ({ id }))
 
     console.log('Nodes: ')
     console.log(nodes)
