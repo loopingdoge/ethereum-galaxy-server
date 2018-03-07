@@ -75,7 +75,7 @@ async function main() {
     console.log('Processing nodes...')
     const sourceIds = minifiedTransactions.map(t => t.source)
     const targetIds = minifiedTransactions.map(t => t.target)
-    const nodeIds = _.compact(_.uniq(_.union(sourceIds, targetIds)))
+    const nodeIds = _.uniq(_.compact(_.union(sourceIds, targetIds)))
 
     const nodeBalancesPromises = nodeIds.map(id =>
         web3.eth.getBalance(id).catch(err => {
@@ -86,7 +86,9 @@ async function main() {
 
     const nodeBalances = await Promise.all(nodeBalancesPromises)
     const cleanNodeBalances = _.compact(nodeBalances)
-    const nodeBalancesInEther = cleanNodeBalances.map(web3.utils.fromWei)
+    const nodeBalancesInEther = cleanNodeBalances.map(b =>
+        web3.utils.fromWei(b)
+    )
 
     const nodes = _.zipWith(nodeIds, nodeBalancesInEther, (id, balance) => ({
         id,
