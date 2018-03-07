@@ -9,7 +9,7 @@ console.log('Initializing...')
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
 const blockRange = {
-    start: 511000,
+    start: 5110000,
     end: 5114000
 }
 
