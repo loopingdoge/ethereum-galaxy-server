@@ -6,8 +6,8 @@ console.log("Initializing web3...")
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 console.log("Initialized\n")
 
-console.log("Latest block number: ")
-web3.eth.getBlockNumber().then(console.log);
+console.log("Latest block: ")
+web3.eth.getBlock("latest").then(console.log);
 
 // app.get('/', (req, res) => res.send('Hello World!'))
 
