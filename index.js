@@ -63,12 +63,12 @@ function dumpPajek(filepath, nodes, transaction) {
     const nodesMap = new Map()
     let str = ''
 
-    str += `*Vertices ${nodes.length}`
+    str += `*Vertices ${nodes.length}\n`
     str += nodes.reduce((acc, curr, index) => {
         nodesMap.set(curr.id, index + 1)
         return acc + `${index + 1} "${curr.id}"\n`
     }, '')
-    str += `*arcs`
+    str += '*arcs\n'
     str += transaction.reduce(
         (acc, curr, index) =>
             acc + `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)}\n`
