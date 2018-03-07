@@ -17,11 +17,14 @@ async function queryBlocks(range) {
     const blocksPromises = Array(range.end - range.start)
         .fill(1)
         .map((one, index) => range.start + one + (index - 1))
-        .map(x => web3.eth.getBlock(x, true))
+        .map(x =>
+            web3.eth.getBlock(x, true).catch(err => {
+                console.log(`Error in getBlock(${x}):`, err)
+                return null
+            })
+        )
 
-    const blocks = await Promise.all(blocksPromises).catch(err => {
-        console.log(err)
-    })
+    const blocks = await Promise.all(blocksPromises)
     return blocks
 }
 
@@ -73,11 +76,16 @@ async function main() {
     const targetIds = minifiedTransactions.map(t => t.target)
     const nodeIds = _.compact(_.union(sourceIds, targetIds))
 
-    const nodeBalancesPromises = nodeIds.map(id => web3.eth.getBalance(id))
-    const nodeBalances = await Promise.all(nodeBalancesPromises).catch(err =>
-        console.log(err)
+    const nodeBalancesPromises = nodeIds.map(id =>
+        web3.eth.getBalance(id).catch(err => {
+            console.log(`Error in getBalance(${id}):`, err)
+            return null
+        })
     )
-    const nodeBalancesInEther = nodeBalances.map(web3.utils.fromWei)
+
+    const nodeBalances = await Promise.all(nodeBalancesPromises)
+    const cleanNodeBalances = _.compact(nodeBalances)
+    const nodeBalancesInEther = cleanNodeBalances.map(web3.utils.fromWei)
 
     const nodes = _.zipWith(nodeIds, nodeBalancesInEther, (id, balance) => ({
         id,
