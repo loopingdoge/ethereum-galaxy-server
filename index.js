@@ -10,7 +10,7 @@ const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
 const blockRange = {
     start: 5110000,
-    end: 5114000
+    end: 5110240
 }
 
 async function queryBlocks(range) {
@@ -65,9 +65,11 @@ async function main() {
             .map(block => block.transactions)
     )
 
-    const minifiedTransactions = transactions.map(transaction =>
-        transformTransaction(transaction, web3.utils.fromWei)
-    )
+    const minifiedTransactions = transactions
+        .map(transaction =>
+            transformTransaction(transaction, web3.utils.fromWei)
+        )
+        .filter(t => t.amount > 0)
 
     console.log('Transactions:')
     console.log(minifiedTransactions)
