@@ -78,8 +78,9 @@ async function main() {
     const nodeBalances = await Promise.all(nodeBalancesPromises).catch(err =>
         console.log(err)
     )
+    const nodeBalancesInEther = nodeBalances.map(web3.utils.fromWei)
 
-    const nodes = _.zipWith(nodeIds, nodeBalances, (id, balance) => ({
+    const nodes = _.zipWith(nodeIds, nodeBalancesInEther, (id, balance) => ({
         id,
         balance
     }))
