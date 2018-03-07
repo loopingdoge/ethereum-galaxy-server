@@ -19,7 +19,7 @@ async function queryBlocks(range) {
         .map((one, index) => range.start + one + (index - 1))
         .map(x =>
             web3.eth.getBlock(x, true).catch(err => {
-                console.log(`Error in getBlock(${x}):`, err)
+                // console.log(`Error in getBlock(${x}):`, err)
                 return null
             })
         )
@@ -56,10 +56,11 @@ function dumpJSON(filepath, nodes, transactions) {
 async function main() {
     console.log('Retrieving blocks...')
     const blocks = await queryBlocks(blockRange)
+    const cleanedBlocks = _.compact(blocks)
 
     console.log('Processing transactions...')
     const transactions = _.flatten(
-        blocks
+        cleanedBlocks
             .filter(block => block.transactions.length > 0)
             .map(block => block.transactions)
     )
@@ -78,7 +79,7 @@ async function main() {
 
     const nodeBalancesPromises = nodeIds.map(id =>
         web3.eth.getBalance(id).catch(err => {
-            console.log(`Error in getBalance(${id}):`, err)
+            // console.log(`Error in getBalance(${id}):`, err)
             return null
         })
     )
