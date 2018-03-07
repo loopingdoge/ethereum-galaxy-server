@@ -21,7 +21,6 @@ async function queryBlocks(range) {
 
     const blocks = await Promise.all(blocksPromises).catch(err => {
         console.log(err)
-        return null
     })
     return blocks
 }
