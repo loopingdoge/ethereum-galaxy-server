@@ -75,7 +75,7 @@ async function main() {
     console.log('Processing nodes...')
     const sourceIds = minifiedTransactions.map(t => t.source)
     const targetIds = minifiedTransactions.map(t => t.target)
-    const nodeIds = _.compact(_uniq(_.union(sourceIds, targetIds)))
+    const nodeIds = _.compact(_.uniq(_.union(sourceIds, targetIds)))
 
     const nodeBalancesPromises = nodeIds.map(id =>
         web3.eth.getBalance(id).catch(err => {
