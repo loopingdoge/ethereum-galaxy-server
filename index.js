@@ -3,13 +3,14 @@ const app = express()
 const Web3 = require('web3')
 const _ = require('lodash')
 const jsonfile = require('jsonfile')
+const fs = require('fs')
 
 console.log('Initializing...')
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
 const blockRange = {
-    start: 400000,
-    end: 401000
+    start: 511000,
+    end: 5114000
 }
 
 async function queryBlocks(range) {
@@ -34,6 +35,12 @@ function transformTransaction(transaction, convertWei) {
 }
 
 function dumpJSON(filepath, nodes, transactions) {
+    const directory = filepath.substring(0, filepath.lastIndexOf('/') + 1)
+
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory)
+    }
+
     const obj = {
         nodes,
         links: transactions
@@ -55,20 +62,22 @@ async function main() {
             .map(block => block.transactions)
     )
 
-    const transformedTransactions = transactions.map(transaction =>
+    const minifiedTransactions = transactions.map(transaction =>
         transformTransaction(transaction, web3.utils.fromWei)
     )
 
     console.log('Transactions:')
-    console.log(transformedTransactions)
+    console.log(minifiedTransactions)
 
     console.log('Processing nodes...')
-    const sourceIds = transformedTransactions.map(t => t.source)
-    const targetIds = transformedTransactions.map(t => t.target)
-    const nodeIds = _.union(sourceIds, targetIds)
+    const sourceIds = minifiedTransactions.map(t => t.source)
+    const targetIds = minifiedTransactions.map(t => t.target)
+    const nodeIds = _.compact(_.union(sourceIds, targetIds))
 
     const nodeBalancesPromises = nodeIds.map(id => web3.eth.getBalance(id))
-    const nodeBalances = await Promise.all(nodeBalancesPromises)
+    const nodeBalances = await Promise.all(nodeBalancesPromises).catch(err =>
+        console.log(err)
+    )
 
     const nodes = _.zipWith(nodeIds, nodeBalances, (id, balance) => ({
         id,
@@ -78,7 +87,7 @@ async function main() {
     console.log('Nodes: ')
     console.log(nodes)
 
-    dumpJSON('json/node.json', nodes, transactions)
+    dumpJSON('json/node.json', nodes, minifiedTransactions)
 }
 
 main()
