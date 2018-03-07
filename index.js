@@ -2,18 +2,12 @@ const express = require('express')
 const app = express()
 const Web3 = require('web3')
 
-let web3 = new Web3()
-
 console.log("Initializing web3...")
-if (typeof web3 !== 'undefined') {
-    web3 = new Web3(web3.currentProvider)
-} else {
-    web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"))
-}
+const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+console.log("Initialized\n")
 
-const latest = web3.eth.getBlock("latest", true)
-console.log("Latest block:")
-console.log(latest)
+console.log("Latest block number: ")
+web3.eth.getBlockNumber().then(console.log);
 
 // app.get('/', (req, res) => res.send('Hello World!'))
 
