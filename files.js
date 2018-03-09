@@ -1,3 +1,6 @@
+const jsonfile = require('jsonfile')
+const fs = require('fs')
+
 function ensureDirExists(filepath) {
     const directory = filepath.substring(0, filepath.lastIndexOf('/') + 1)
 
