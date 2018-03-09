@@ -20,18 +20,10 @@ async function queryBlocks(range) {
         .fill(1)
         .map((one, index) => range.start + one + (index - 1))
         .map(x =>
-            web3.eth
-                .getBlock(x, true)
-                .then(v => {
-                    if (!v.target) {
-                        console.log(v)
-                    }
-                    return v
-                })
-                .catch(err => {
-                    console.log(`Error in getBlock(${x}):`, err)
-                    return null
-                })
+            web3.eth.getBlock(x, true).catch(err => {
+                console.log(`Error in getBlock(${x}):`, err)
+                return null
+            })
         )
 
     const blocks = await Promise.all(blocksPromises)
@@ -57,6 +49,12 @@ async function main() {
             .filter(block => block.transactions.length > 0)
             .map(block => block.transactions)
     )
+
+    transactions.forEach(t => {
+        if (!t.to) {
+            console.log('No target', t)
+        }
+    })
 
     const minifiedTransactions = transactions
         .map(transaction =>
