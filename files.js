@@ -6,7 +6,7 @@ function ensureDirExists(filepath) {
     }
 }
 
-export function dumpJSON(filepath, nodes, transactions) {
+function dumpJSON(filepath, nodes, transactions) {
     ensureDirExists(filepath)
 
     const obj = {
@@ -19,7 +19,7 @@ export function dumpJSON(filepath, nodes, transactions) {
     })
 }
 
-export function dumpPajek(filepath, nodes, transaction) {
+function dumpPajek(filepath, nodes, transaction) {
     ensureDirExists(filepath)
 
     const nodesMap = new Map()
@@ -41,4 +41,9 @@ export function dumpPajek(filepath, nodes, transaction) {
     )
 
     fs.writeFileSync(filepath, str)
+}
+
+module.exports = {
+    dumpJSON,
+    dumpPajek
 }
