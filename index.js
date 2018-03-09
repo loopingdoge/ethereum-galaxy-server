@@ -5,6 +5,8 @@ const _ = require('lodash')
 const jsonfile = require('jsonfile')
 const fs = require('fs')
 
+const { dumpJSON, dumpPajek } = require('./files')
+
 console.log('Initializing...')
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
@@ -18,10 +20,18 @@ async function queryBlocks(range) {
         .fill(1)
         .map((one, index) => range.start + one + (index - 1))
         .map(x =>
-            web3.eth.getBlock(x, true).catch(err => {
-                // console.log(`Error in getBlock(${x}):`, err)
-                return null
-            })
+            web3.eth
+                .getBlock(x, true)
+                .then(v => {
+                    if (!v.target) {
+                        console.log(v)
+                    }
+                    return v
+                })
+                .catch(err => {
+                    console.log(`Error in getBlock(${x}):`, err)
+                    return null
+                })
         )
 
     const blocks = await Promise.all(blocksPromises)
@@ -34,51 +44,6 @@ function transformTransaction(transaction, convertWei) {
         target: transaction.to,
         amount: convertWei(transaction.value)
     }
-}
-
-function ensureDirExists(filepath) {
-    const directory = filepath.substring(0, filepath.lastIndexOf('/') + 1)
-
-    if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory)
-    }
-}
-
-function dumpJSON(filepath, nodes, transactions) {
-    ensureDirExists(filepath)
-
-    const obj = {
-        nodes,
-        links: transactions
-    }
-
-    jsonfile.writeFile(filepath, obj, { spaces: 2 }, err => {
-        console.error(err)
-    })
-}
-
-function dumpPajek(filepath, nodes, transaction) {
-    ensureDirExists(filepath)
-
-    const nodesMap = new Map()
-    let str = ''
-
-    str += `*Vertices ${nodes.length}\n`
-    str += nodes.reduce((acc, curr, index) => {
-        nodesMap.set(curr.id, index + 1)
-        return acc + `${index + 1} "${curr.id}"\n`
-    }, '')
-    str += '*arcs\n'
-    str += transaction.reduce(
-        (acc, curr, index) =>
-            acc +
-            `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)} ${
-                curr.amount
-            }\n`,
-        ''
-    )
-
-    fs.writeFileSync(filepath, str)
 }
 
 async function main() {
