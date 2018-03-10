@@ -5,6 +5,8 @@ const { jsonFilename, pajekFilename } = require('./config')
 const { dumpJSON, dumpPajek } = require('./files')
 const logger = require('./log')
 
+const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
+
 async function queryBlocks(range) {
     const blocksPromises = Array(range.end - range.start)
         .fill(1)
@@ -29,7 +31,6 @@ function transformTransaction(transaction, convertWei) {
 }
 
 async function eth(range) {
-    const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
     logger.log('Retrieving blocks...')
     const blocks = await queryBlocks(range)
     const cleanedBlocks = _.compact(blocks)
