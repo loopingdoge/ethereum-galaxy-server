@@ -48,5 +48,6 @@ function dumpPajek(filepath, nodes, transaction) {
 
 module.exports = {
     dumpJSON,
-    dumpPajek
+    dumpPajek,
+    ensureDirExists
 }
