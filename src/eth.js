@@ -48,8 +48,7 @@ async function eth(range) {
         )
         .filter(t => t.amount > 0)
 
-    logger.log('Transactions:')
-    logger.log(minifiedTransactions)
+    logger.log('Transactions done')
 
     logger.log('Processing nodes...')
     const sourceIds = minifiedTransactions.map(t => t.source)
@@ -58,8 +57,7 @@ async function eth(range) {
 
     const nodes = nodeIds.map(id => ({ id }))
 
-    logger.log('Nodes: ')
-    logger.log(nodes)
+    logger.log('Nodes done')
 
     dumpJSON(jsonFilename, nodes, minifiedTransactions)
     dumpPajek(pajekFilename, nodes, minifiedTransactions)
