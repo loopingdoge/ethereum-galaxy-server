@@ -42,9 +42,7 @@ function createLogger(path) {
         },
         progress: (message, maxTicks) => {
             return new ProgressBar(
-                `${colors.green('log:')}    ${colors.cyan(
-                    message
-                )} [:bar] :percent`,
+                `${coloredLog(LOG, message)} [:bar] :percent`,
                 { total: maxTicks, width: 30 }
             )
         }
