@@ -22,7 +22,8 @@ function calculateLayout(graph, onTick) {
             const finalNodes = simulation.nodes().map(n => ({
                 id: n.id,
                 x: n.x,
-                y: n.y
+                y: n.y,
+                z: n.z
             }))
             const layoutedGraph = {
                 nodes: finalNodes,
