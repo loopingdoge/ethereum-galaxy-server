@@ -53,6 +53,7 @@ async function eth(range) {
     logger.log('Transactions done')
 
     logger.log('Processing nodes...')
+
     const sourceIds = minifiedTransactions.map(t => t.source)
     const targetIds = minifiedTransactions.map(t => t.target)
     const nodeIds = _.uniq(_.compact(_.union(sourceIds, targetIds)))
@@ -61,14 +62,23 @@ async function eth(range) {
 
     logger.log('Nodes done')
 
-    const progressBar = logger.progress('calculating layout', 300)
+    const progressBar = logger.progress('Calculating layout', 300)
     const graph = await calculateLayout(
         { nodes, links: minifiedTransactions },
         () => progressBar.tick()
     )
 
+    logger.log('Layout done')
+
+    logger.log('Exporting the graph to JSON...')
+
     dumpJSON(jsonFilename, graph)
+
+    logger.log('Exporting the graph to Pajek...')
+
     dumpPajek(pajekFilename, graph)
+
+    logger.log('Finished, cya')
 }
 
 module.exports = eth
