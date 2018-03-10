@@ -61,13 +61,11 @@ async function eth(range) {
 
     logger.log('Nodes done')
 
-    const progressBar = logger.progress(':calculating layout', 300)
+    const progressBar = logger.progress('calculating layout', 300)
     const graph = await calculateLayout(
         { nodes, links: minifiedTransactions },
         () => progressBar.tick()
     )
-    progressBar.terminate()
-    logger.log('Layout done')
 
     dumpJSON(jsonFilename, graph)
     dumpPajek(pajekFilename, graph)
