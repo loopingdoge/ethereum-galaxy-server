@@ -34,7 +34,6 @@ function transformTransaction(transaction, convertWei) {
 async function eth(range) {
     logger.log('Retrieving blocks...')
     const blocks = await queryBlocks(range)
-    logger.log('Blocks done')
     const cleanedBlocks = _.compact(blocks)
 
     logger.log('Processing transactions...')
@@ -50,8 +49,6 @@ async function eth(range) {
         )
         .filter(t => t.amount > 0)
 
-    logger.log('Transactions done')
-
     logger.log('Processing nodes...')
 
     const sourceIds = minifiedTransactions.map(t => t.source)
@@ -60,15 +57,11 @@ async function eth(range) {
 
     const nodes = nodeIds.map(id => ({ id }))
 
-    logger.log('Nodes done')
-
     const progressBar = logger.progress('Calculating layout', 300)
     const graph = await calculateLayout(
         { nodes, links: minifiedTransactions },
         () => progressBar.tick()
     )
-
-    logger.log('Layout done')
 
     logger.log('Exporting the graph to JSON...')
 
