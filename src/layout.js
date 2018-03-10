@@ -1,8 +1,6 @@
 const force = require('d3-force-3d')
 const jsonfile = require('jsonfile')
 
-const data = jsonfile.readFileSync('./graph.json')
-
 function calculateLayout(graph, onTick) {
     return new Promise((resolve, _reject) => {
         const graphCopy = JSON.parse(JSON.stringify(graph))
