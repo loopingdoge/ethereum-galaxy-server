@@ -64,7 +64,7 @@ async function eth(range) {
     const progressBar = logger.progress(':calculating layout', 300)
     const graph = await calculateLayout(
         { nodes, links: minifiedTransactions },
-        progressBar.tick
+        () => progressBar.tick()
     )
     progressBar.terminate()
     logger.log('Layout done')
