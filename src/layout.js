@@ -28,7 +28,7 @@ function calculateLayout(graph, onTick) {
                 nodes: finalNodes,
                 links: graph.links
             }
-            return layoutedGraph
+            resolve(layoutedGraph)
         })
     })
 }
