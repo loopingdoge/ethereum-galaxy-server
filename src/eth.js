@@ -4,6 +4,7 @@ const _ = require('lodash')
 const { jsonFilename, pajekFilename } = require('./config')
 const { dumpJSON, dumpPajek } = require('./files')
 const logger = require('./log')
+const calculateLayout = require('./layout')
 
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
@@ -33,6 +34,7 @@ function transformTransaction(transaction, convertWei) {
 async function eth(range) {
     logger.log('Retrieving blocks...')
     const blocks = await queryBlocks(range)
+    logger.log('Blocks done')
     const cleanedBlocks = _.compact(blocks)
 
     logger.log('Processing transactions...')
@@ -59,8 +61,16 @@ async function eth(range) {
 
     logger.log('Nodes done')
 
-    dumpJSON(jsonFilename, nodes, minifiedTransactions)
-    dumpPajek(pajekFilename, nodes, minifiedTransactions)
+    const progressBar = logger.progress(':calculating layout', 300)
+    const graph = await calculateLayout(
+        { nodes, links: minifiedTransactions },
+        progressBar.tick
+    )
+    progressBar.terminate()
+    logger.log('Layout done')
+
+    dumpJSON(jsonFilename, graph)
+    dumpPajek(pajekFilename, graph)
 }
 
 module.exports = eth

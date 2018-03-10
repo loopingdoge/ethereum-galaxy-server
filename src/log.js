@@ -1,5 +1,6 @@
 const fs = require('fs')
 const colors = require('colors/safe')
+const ProgressBar = require('progress')
 
 const { logFilename } = require('./config')
 
@@ -38,6 +39,9 @@ function createLogger(path) {
         },
         end: () => {
             stream.end()
+        },
+        progress: (message, maxTicks) => {
+            return new ProgressBar(message, { total: maxTicks })
         }
     }
 }

@@ -380,6 +380,41 @@ crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+d3-binarytree@~0.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/d3-binarytree/-/d3-binarytree-0.1.2.tgz#63e2774f13691bbd9112a80b5ed6e9902b327f0a"
+
+d3-collection@1:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.4.tgz#342dfd12837c90974f33f1cc0a785aea570dcdc2"
+
+d3-dispatch@1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/d3-dispatch/-/d3-dispatch-1.0.3.tgz#46e1491eaa9b58c358fce5be4e8bed626e7871f8"
+
+d3-force-3d@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/d3-force-3d/-/d3-force-3d-1.1.0.tgz#dcfec4a54a348a57a382da9f2558312aa55a06f1"
+  dependencies:
+    d3-binarytree "~0.1"
+    d3-collection "1"
+    d3-dispatch "1"
+    d3-octree "~0.1"
+    d3-quadtree "1"
+    d3-timer "1"
+
+d3-octree@~0.1:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/d3-octree/-/d3-octree-0.1.2.tgz#37bf919df79e661eda5865921eb6ca7f03897fcc"
+
+d3-quadtree@1:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/d3-quadtree/-/d3-quadtree-1.0.3.tgz#ac7987e3e23fe805a990f28e1b50d38fcb822438"
+
+d3-timer@1:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-1.0.7.tgz#df9650ca587f6c96607ff4e60cc38229e8dd8531"
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -1161,6 +1196,10 @@ nano-json-stream-parser@^0.1.2:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+node-progress@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/node-progress/-/node-progress-0.1.0.tgz#ac5a999c162148b19fa7797842a25d10f0ebc513"
 
 normalize-path@^1.0.0:
   version "1.0.0"

@@ -9,20 +9,15 @@ function ensureDirExists(filepath) {
     }
 }
 
-function dumpJSON(filepath, nodes, transactions) {
+function dumpJSON(filepath, graph) {
     ensureDirExists(filepath)
 
-    const obj = {
-        nodes,
-        links: transactions
-    }
-
-    jsonfile.writeFile(filepath, obj, { spaces: 2 }, err => {
+    jsonfile.writeFile(filepath, graph, { spaces: 2 }, err => {
         console.error(err)
     })
 }
 
-function dumpPajek(filepath, nodes, transaction) {
+function dumpPajek(filepath, { nodes, links }) {
     ensureDirExists(filepath)
 
     const nodesMap = new Map()
@@ -34,7 +29,7 @@ function dumpPajek(filepath, nodes, transaction) {
         return acc + `${index + 1} "${curr.id}"\n`
     }, '')
     str += '*arcs\n'
-    str += transaction.reduce(
+    str += links.reduce(
         (acc, curr, index) =>
             acc +
             `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)} ${
