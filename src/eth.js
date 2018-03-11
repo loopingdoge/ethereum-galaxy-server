@@ -44,7 +44,11 @@ async function eth(range) {
     const blocksIndexesAtATime = _.chunk(blocksIndexes, 240)
 
     const blockChunks = []
+    let i = 1
     for (b of blocksIndexesAtATime) {
+        logger.log(
+            `Retrieving chunk ${i++} of ${blocksIndexesAtATime.length}...`
+        )
         const blocksChunk = await queryBlocks(b)
         blockChunks.push(blocksChunk)
     }
