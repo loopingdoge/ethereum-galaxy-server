@@ -26,6 +26,7 @@
         "lodash": "^4.17.5",
         "ngraph.graph": "^0.0.14",
         "ngraph.offline.layout": "^1.1.1",
+        "ngraph.tobinary": "^1.0.1",
         "progress": "^2.0.0",
         "web3": "^1.0.0-beta.30"
     },

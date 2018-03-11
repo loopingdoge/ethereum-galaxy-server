@@ -1,6 +1,8 @@
 const createGraph = require('ngraph.graph')
 const createLayout = require('ngraph.offline.layout')
 
+const { ngraphBasePath } = require('./config')
+
 function calculateLayout(graph, onTick) {
     return new Promise((resolve, _reject) => {
         const g = createGraph()
@@ -12,12 +14,12 @@ function calculateLayout(graph, onTick) {
         const layout = createLayout(g, {
             iterations: 500,
             saveEach: 500,
-            outDir: './graphs/'
+            outDir: ngraphBasePath
         })
 
         layout.run()
 
-        resolve(graph)
+        resolve(g)
     })
 }
 

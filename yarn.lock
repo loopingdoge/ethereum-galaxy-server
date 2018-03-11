@@ -1271,6 +1271,13 @@ ngraph.random@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/ngraph.random/-/ngraph.random-0.0.1.tgz#c008e2ebbfdffaf17ed10e4bbc913e567166bcf8"
 
+ngraph.tobinary@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ngraph.tobinary/-/ngraph.tobinary-1.0.1.tgz#493f0082df8f5b6f52980a43306bbaa6c969613e"
+  dependencies:
+    mkdirp "^0.5.0"
+    ngraph.merge "0.0.1"
+
 normalize-path@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-1.0.0.tgz#32d0e472f91ff345701c15a8311018d3b0a90379"

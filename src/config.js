@@ -6,12 +6,16 @@ const logFilename = './logs/' + baseFilename + '.log'
 const jsonFilename = './graphs/' + baseFilename + '.json'
 const pajekFilename = './graphs/' + baseFilename + '.net'
 
+const ngraphBasePath = './graphs/ngraph/'
+
 ensureDirExists(logFilename)
 ensureDirExists(jsonFilename)
 ensureDirExists(pajekFilename)
 
 module.exports = {
+    baseFilename,
     jsonFilename,
     logFilename,
-    pajekFilename
+    pajekFilename,
+    ngraphBasePath
 }

@@ -1,7 +1,13 @@
 const Web3 = require('web3')
 const _ = require('lodash')
+const saveGraph = require('ngraph.tobinary')
 
-const { jsonFilename, pajekFilename } = require('./config')
+const {
+    baseFilename,
+    jsonFilename,
+    pajekFilename,
+    ngraphBasePath
+} = require('./config')
 const { dumpJSON, dumpPajek } = require('./files')
 const logger = require('./log')
 const calculateLayout = require('./layout')
@@ -62,7 +68,14 @@ async function eth(range) {
 
     const graph = { nodes, links: minifiedTransactions }
 
-    calculateNgraphLayout(graph, () => {})
+    const ngraph = await calculateNgraphLayout(graph)
+
+    save(ngraph, {
+        outDir: ngraphBasePath,
+        labels: `${baseFilename}-labels.json`,
+        meta: `${baseFilename}-meta.json`,
+        links: `${baseFilename}-links.bin`
+    })
 
     // const progressBar = logger.progress('Calculating layout', 300)
     // const graph = await calculateLayout(
