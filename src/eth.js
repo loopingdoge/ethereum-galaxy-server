@@ -24,7 +24,10 @@ async function queryBlocks(blocksIndexes) {
     )
 
     const blocks = await Promise.all(blocksPromises)
-    return blocks
+    const onlyTransactions = blocks.map(b => {
+        transactions: b.transactions
+    })
+    return onlyTransactions
 }
 
 function transformTransaction(transaction, convertWei) {
@@ -50,6 +53,7 @@ async function eth(range) {
             `Retrieving chunk ${i++} of ${blocksIndexesAtATime.length}...`
         )
         const blocksChunk = await queryBlocks(b)
+
         blockChunks.push(blocksChunk)
     }
     const blocks = _.flatten(blockChunks)
