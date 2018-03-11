@@ -7,6 +7,7 @@ function calculateLayout(graph, onTick) {
 
         const simulation = force
             .forceSimulation()
+            .numDimensions(3)
             .force('link', force.forceLink().id(d => d.id))
             .force('charge', force.forceManyBody())
             .force('center', force.forceCenter(300, 300))
@@ -25,6 +26,7 @@ function calculateLayout(graph, onTick) {
                 y: n.y,
                 z: n.z
             }))
+
             const layoutedGraph = {
                 nodes: finalNodes,
                 links: graph.links
