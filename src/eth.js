@@ -64,28 +64,27 @@ async function eth(range) {
 
     logger.log('Processing transactions...')
     const transactions = _.flatten(
-        cleanedBlocks
-            .filter(block => block.transactions.length > 0)
-            .map(block => block.transactions)
+        cleanedBlocks.filter(block => block.transactions.length > 0)
+        // .map(block => block.transactions)
     )
 
-    const minifiedTransactions = transactions
-        .map(transaction =>
-            transformTransaction(transaction, web3.utils.fromWei)
-        )
-        .filter(t => t.amount > 0)
+    // const minifiedTransactions = transactions
+    //     .map(transaction =>
+    //         transformTransaction(transaction, web3.utils.fromWei)
+    //     )
+    //     .filter(t => t.amount > 0)
 
     logger.log('Processing nodes...')
 
-    const sourceIds = minifiedTransactions.map(t => t.source)
-    const targetIds = minifiedTransactions.map(t => t.target)
+    const sourceIds = transactions.map(t => t.source)
+    const targetIds = transactions.map(t => t.target)
     const nodeIds = _.uniq(_.compact(_.union(sourceIds, targetIds)))
 
     const nodes = nodeIds.map(id => ({ id }))
 
     logger.log('Calculating layout...')
 
-    const graph = { nodes, links: minifiedTransactions }
+    const graph = { nodes, links: transactions }
 
     const ngraph = await calculateNgraphLayout(graph)
 
