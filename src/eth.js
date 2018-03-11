@@ -26,6 +26,8 @@ async function queryBlocks(blocksIndexes) {
     const blocks = await Promise.all(blocksPromises)
     const onlyTransactions = blocks.map(b => ({
         transactions: b.transactions
+            .map(t => transformTransaction(t, web3.utils.fromWei))
+            .filter(t => t.amount > 0)
     }))
     return onlyTransactions
 }
