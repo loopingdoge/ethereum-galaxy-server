@@ -5,6 +5,7 @@ const { jsonFilename, pajekFilename } = require('./config')
 const { dumpJSON, dumpPajek } = require('./files')
 const logger = require('./log')
 const calculateLayout = require('./layout')
+const calculateNgraphLayout = require('./ngraph-layout')
 
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
@@ -57,11 +58,15 @@ async function eth(range) {
 
     const nodes = nodeIds.map(id => ({ id }))
 
-    const progressBar = logger.progress('Calculating layout', 300)
-    const graph = await calculateLayout(
-        { nodes, links: minifiedTransactions },
-        () => progressBar.tick()
-    )
+    logger.log('Calculating layout...')
+
+    calculateNgraphLayout({ nodes, links: minifiedTransactions }, () => {})
+
+    // const progressBar = logger.progress('Calculating layout', 300)
+    // const graph = await calculateLayout(
+    //     { nodes, links: minifiedTransactions },
+    //     () => progressBar.tick()
+    // )
 
     logger.log('Exporting the graph to JSON...')
 
