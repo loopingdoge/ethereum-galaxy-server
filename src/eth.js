@@ -65,7 +65,7 @@ async function eth(range) {
     logger.log('Processing transactions...')
     const transactions = _.flatten(
         cleanedBlocks.filter(block => block.transactions.length > 0)
-        // .map(block => block.transactions)
+        .map(block => block.transactions)
     )
 
     // const minifiedTransactions = transactions
@@ -75,7 +75,7 @@ async function eth(range) {
     //     .filter(t => t.amount > 0)
 
     logger.log('Processing nodes...')
-
+    
     const sourceIds = transactions.map(t => t.source)
     const targetIds = transactions.map(t => t.target)
     const nodeIds = _.uniq(_.compact(_.union(sourceIds, targetIds)))
