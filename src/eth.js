@@ -72,9 +72,9 @@ async function eth(range) {
 
     saveGraph(ngraph, {
         outDir: ngraphBasePath,
-        labels: `${baseFilename}-labels.json`,
-        meta: `${baseFilename}-meta.json`,
-        links: `${baseFilename}-links.bin`
+        labels: `labels.json`,
+        meta: `meta.json`,
+        links: `links.bin`
     })
 
     // const progressBar = logger.progress('Calculating layout', 300)

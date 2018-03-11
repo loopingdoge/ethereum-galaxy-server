@@ -6,7 +6,7 @@ const logFilename = './logs/' + baseFilename + '.log'
 const jsonFilename = './graphs/' + baseFilename + '.json'
 const pajekFilename = './graphs/' + baseFilename + '.net'
 
-const ngraphBasePath = './graphs/ngraph/'
+const ngraphBasePath = './graphs/ngraph/' + baseFilename + '/'
 
 ensureDirExists(logFilename)
 ensureDirExists(jsonFilename)
