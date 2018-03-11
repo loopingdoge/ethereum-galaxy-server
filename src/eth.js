@@ -24,9 +24,9 @@ async function queryBlocks(blocksIndexes) {
     )
 
     const blocks = await Promise.all(blocksPromises)
-    const onlyTransactions = blocks.map(b => {
+    const onlyTransactions = blocks.map(b => ({
         transactions: b.transactions
-    })
+    }))
     return onlyTransactions
 }
 
