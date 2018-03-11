@@ -70,7 +70,7 @@ async function eth(range) {
 
     const ngraph = await calculateNgraphLayout(graph)
 
-    save(ngraph, {
+    saveGraph(ngraph, {
         outDir: ngraphBasePath,
         labels: `${baseFilename}-labels.json`,
         meta: `${baseFilename}-meta.json`,
