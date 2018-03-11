@@ -16,7 +16,7 @@ const calculateNgraphLayout = require('./ngraph-layout')
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
 async function queryBlocks(blocksIndexes) {
-    blocksIndexes.map(x =>
+    const blocksPromises = blocksIndexes.map(x =>
         web3.eth.getBlock(x, true).catch(err => {
             logger.error(`Error retrieving getBlock(${x}): ${err}`)
             return null
@@ -42,12 +42,13 @@ async function eth(range) {
         .map((one, index) => range.start + one + (index - 1))
 
     const blocksIndexesAtATime = _.chunk(blocksIndexes, 240)
-    const blocks = _.flatten(
-        blocksIndexesAtATime.map(async b => {
-            const block = await queryBlocks(b)
-            return block
-        })
-    )
+
+    const blockChunks = []
+    for (b of blocksIndexesAtATime) {
+        const blocksChunk = await queryBlocks(b)
+        blockChunks.push(blocksChunk)
+    }
+    const blocks = _.flatten(blockChunks)
 
     const cleanedBlocks = _.compact(blocks)
 
