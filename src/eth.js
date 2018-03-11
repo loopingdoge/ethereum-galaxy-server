@@ -60,7 +60,9 @@ async function eth(range) {
 
     logger.log('Calculating layout...')
 
-    calculateNgraphLayout({ nodes, links: minifiedTransactions }, () => {})
+    const graph = { nodes, links: minifiedTransactions }
+
+    calculateNgraphLayout(graph, () => {})
 
     // const progressBar = logger.progress('Calculating layout', 300)
     // const graph = await calculateLayout(
