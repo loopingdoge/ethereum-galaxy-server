@@ -15,16 +15,13 @@ const calculateNgraphLayout = require('./ngraph-layout')
 
 const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
 
-async function queryBlocks(range) {
-    const blocksPromises = Array(range.end - range.start)
-        .fill(1)
-        .map((one, index) => range.start + one + (index - 1))
-        .map(x =>
-            web3.eth.getBlock(x, true).catch(err => {
-                logger.error(`Error retrieving getBlock(${x}): ${err}`)
-                return null
-            })
-        )
+async function queryBlocks(blocksIndexes) {
+    blocksIndexes.map(x =>
+        web3.eth.getBlock(x, true).catch(err => {
+            logger.error(`Error retrieving getBlock(${x}): ${err}`)
+            return null
+        })
+    )
 
     const blocks = await Promise.all(blocksPromises)
     return blocks
@@ -40,7 +37,18 @@ function transformTransaction(transaction, convertWei) {
 
 async function eth(range) {
     logger.log('Retrieving blocks...')
-    const blocks = await queryBlocks(range)
+    const blocksIndexes = Array(range.end - range.start)
+        .fill(1)
+        .map((one, index) => range.start + one + (index - 1))
+
+    const blocksIndexesAtATime = _.chunk(blocksIndexes, 240)
+    const blocks = _.flatten(
+        blocksIndexesAtATime.map(async b => {
+            const block = await queryBlocks(b)
+            return block
+        })
+    )
+
     const cleanedBlocks = _.compact(blocks)
 
     logger.log('Processing transactions...')
