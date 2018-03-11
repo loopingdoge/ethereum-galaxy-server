@@ -5,7 +5,7 @@ const eth = require('./eth')
 
 const blockRange = {
     start: 5110000,
-    end: 5110020
+    end: 5110240
 }
 
 eth(blockRange)
