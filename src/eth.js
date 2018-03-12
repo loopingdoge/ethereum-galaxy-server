@@ -67,7 +67,7 @@ async function eth(range) {
         cleanedBlocks
             .filter(block => block.transactions.length > 0)
             .map(block => block.transactions)
-    )
+    ).filter(t => t.source !== null && t.target !== null)
 
     // const minifiedTransactions = transactions
     //     .map(transaction =>
