@@ -1,5 +1,6 @@
 [ignore]
 .*/node_modules/.*
+.*/build/.*
 [include]
 [libs]
 flow-typed
