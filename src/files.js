@@ -4,11 +4,17 @@ const fs = require('fs')
 import type { Graph, Node, Link } from './eth'
 
 function ensureDirExists(filepath: string) {
-    const directory = filepath.substring(0, filepath.lastIndexOf('/') + 1)
+    const subdirsTokens = filepath.split('/')
+    const subdirs = subdirsTokens.slice(1, subdirsTokens.length - 1)
+    const directoriesFullPath = subdirs.map((_, i, a) =>
+        a.slice(0, i + 1).join('/')
+    )
 
-    if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory)
-    }
+    directoriesFullPath.forEach(directory => {
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory)
+        }
+    })
 }
 
 function dumpJSON(filepath: string, graph: Graph) {
