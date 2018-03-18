@@ -38,19 +38,29 @@ module.exports = (infuraApiKey: string) => {
         Web3.givenProvider || `https://mainnet.infura.io/${infuraApiKey}:8546`
     )
 
-    async function queryBlocks(blocksIndexes) {
+    async function queryBlocks(blocksIndexes, cb) {
         const blocksPromises = blocksIndexes.map(x =>
-            web3.eth.getBlock(x, true).catch(err => {
-                logger.error(`Error retrieving getBlock(${x}): ${err}`)
-                return null
-            })
+            web3.eth
+                .getBlock(x, true)
+                .then(block => {
+                    cb()
+                    return block
+                })
+                .catch(err => {
+                    cb()
+                    logger.error(`Error retrieving getBlock(${x}): ${err}`)
+                    return null
+                })
         )
 
-        const blocks = await Promise.all(blocksPromises)
+        const blocks = _.compact(await Promise.all(blocksPromises))
+
         const onlyTransactions = blocks.map(b => ({
             transactions: b.transactions
                 .map(t => transformTransaction(t, web3.utils.fromWei))
-                .filter(t => t.amount > 0)
+                .filter(
+                    t => t.amount > 0 && t.source !== null && t.target !== null
+                )
         }))
         return onlyTransactions
     }
@@ -72,25 +82,30 @@ module.exports = (infuraApiKey: string) => {
         const blocksIndexesAtATime = _.chunk(blocksIndexes, 240)
 
         const blockChunks = []
-        let i = 1
-        for (let b of blocksIndexesAtATime) {
-            logger.log(
-                `Retrieving chunk ${i++} of ${blocksIndexesAtATime.length}...`
+        for (let i = 0; i < blocksIndexesAtATime.length; i++) {
+            const blocksIndexes = blocksIndexesAtATime[i]
+            const progressBar = logger.progress(
+                `Retrieving chunk ${i + 1} of ${
+                    blocksIndexesAtATime.length
+                }...`,
+                blocksIndexes.length
             )
-            const blocksChunk = await queryBlocks(b)
+            const blocksChunk = await queryBlocks(blocksIndexes, () =>
+                progressBar.tick()
+            )
 
             blockChunks.push(blocksChunk)
         }
         const blocks = _.flatten(blockChunks)
 
-        const cleanedBlocks = _.compact(blocks)
+        const cleanedBlocks = _.compact(blocks) // I don't think we need this
 
         logger.log('Processing transactions...')
         const transactions = _.flatten(
             cleanedBlocks
                 .filter(block => block.transactions.length > 0)
                 .map(block => block.transactions)
-        ).filter(t => t.source !== null && t.target !== null)
+        )
 
         // const minifiedTransactions = transactions
         //     .map(transaction =>
