@@ -1,14 +1,30 @@
 const express = require('express')
-const app = express()
+const commander = require('commander')
 
-const eth = require('./eth')
+const { eth, lastBlock } = require('./eth')
 
-const blockRange = {
-    start: 5110000,
-    end: 5110240
-}
+// const app = express()
 
-eth(blockRange)
+// commander
+//   .version('0.1.0')
+//   .option('-h, --hours <n>', 'How often to run the script', parseInt)
+//   .parse(process.argv);
+
+// console.log("Peppers: " + commander.peppers)
+;(async () => {
+    if (!process.env.INFURA_API_KEY) {
+        throw new Error('INFURA_API_KEY env variable not found')
+    }
+
+    const lastBlockNumber = await lastBlock()
+
+    const blockRange = {
+        start: lastBlockNumber - 20,
+        end: lastBlockNumber
+    }
+
+    eth(blockRange)
+})()
 
 // app.get('/', (req, res) => res.send('Hello World!'))
 

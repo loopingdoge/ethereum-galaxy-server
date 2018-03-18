@@ -13,7 +13,10 @@ const logger = require('./log')
 const calculateLayout = require('./layout')
 const calculateNgraphLayout = require('./ngraph-layout')
 
-const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545')
+const web3 = new Web3(
+    Web3.givenProvider ||
+        `https://mainnet.infura.io/${process.env.INFURA_API_KEY}:8546`
+)
 
 async function queryBlocks(blocksIndexes) {
     const blocksPromises = blocksIndexes.map(x =>
@@ -86,7 +89,8 @@ async function eth(range) {
     logger.log('Calculating layout...')
 
     const graph = { nodes, links: transactions }
-
+    const saveLog = console.log
+    console.log = () => {}
     const ngraph = await calculateNgraphLayout(graph)
 
     saveGraph(ngraph, {
@@ -95,7 +99,7 @@ async function eth(range) {
         meta: `meta.json`,
         links: `links.bin`
     })
-
+    console.log = saveLog
     // const progressBar = logger.progress('Calculating layout', 300)
     // const graph = await calculateLayout(
     //     { nodes, links: minifiedTransactions },
@@ -113,4 +117,14 @@ async function eth(range) {
     logger.log('Finished, cya')
 }
 
-module.exports = eth
+async function lastBlock() {
+    const syncResult = await web3.eth.isSyncing()
+    if (syncResult) {
+        return syncResult.currentBlock
+    } else {
+        const lastBlockNumber = await web3.eth.getBlockNumber()
+        return lastBlockNumber
+    }
+}
+
+module.exports = { eth, lastBlock }
