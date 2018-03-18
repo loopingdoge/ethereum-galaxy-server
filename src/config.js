@@ -1,12 +1,14 @@
 const { ensureDirExists } = require('./files')
 
-const baseFilename = `eth-h${new Date().getHours()}`
+const howOftenToRun = process.env.ETH_HOURS
 
-const logFilename = './logs/' + baseFilename + '.log'
-const jsonFilename = './graphs/' + baseFilename + '.json'
-const pajekFilename = './graphs/' + baseFilename + '.net'
+const baseFilename = `eth-${howOftenToRun}/${new Date().getHours()}`
 
-const ngraphBasePath = './graphs/' + baseFilename + '-ngraph/'
+const logFilename = `./logs/${baseFilename}.log`
+const jsonFilename = `./graphs/${baseFilename}/graph.json`
+const pajekFilename = `./graphs/${baseFilename}/graph.net`
+
+const ngraphBasePath = `./graphs/${baseFilename}/ngraph/`
 
 ensureDirExists(logFilename)
 ensureDirExists(jsonFilename)
