@@ -1,33 +1,36 @@
 const express = require('express')
-const commander = require('commander')
+const schedule = require('node-schedule')
 
 const createEth = require('./eth')
 
-// const app = express()
+if (!process.env.INFURA_API_KEY) {
+    throw new Error('INFURA_API_KEY env variable not found')
+}
 
-// commander
-//   .version('0.1.0')
-//   .option('-h, --hours <n>', 'How often to run the script', parseInt)
-//   .parse(process.argv);
+if (!process.env.ETH_HOURS) {
+    throw new Error('ETH_HOURS env variable not found')
+}
 
-// console.log("Peppers: " + commander.peppers)
-;(async () => {
-    if (!process.env.INFURA_API_KEY) {
-        throw new Error('INFURA_API_KEY env variable not found')
-    }
+const infuraApiKey = process.env.INFURA_API_KEY
+const howOftenToRun = parseInt(process.env.ETH_HOURS)
 
-    const { eth, lastBlock } = createEth(process.env.INFURA_API_KEY)
+const recurrenceRule = new schedule.RecurrenceRule()
+recurrenceRule.hour = Array(Math.ceil(24 / howOftenToRun))
+    .fill(1)
+    .map((one, index) => index * howOftenToRun)
+recurrenceRule.minute = 0
+
+async function start() {
+    const { eth, lastBlock } = createEth(infuraApiKey)
 
     const lastBlockNumber = await lastBlock()
 
     const blockRange = {
-        start: lastBlockNumber - 20,
+        start: lastBlockNumber - 240 * howOftenToRun,
         end: lastBlockNumber
     }
 
     eth(blockRange)
-})()
+}
 
-// app.get('/', (req, res) => res.send('Hello World!'))
-
-// app.listen(3000, () => console.log('Example app listening on port 3000!'))
+schedule.scheduleJob(recurrenceRule, start)
