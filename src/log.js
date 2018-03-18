@@ -40,8 +40,12 @@ function createLogger(path: string) {
             stream.end()
         },
         progress: (message: string, maxTicks: number) => {
+            stream.write(uncoloredLog('LOG', message) + '\n')
             return new ProgressBar(
-                `${coloredLog('LOG', colors.cyan(message))} [:bar] :percent`,
+                `${coloredLog(
+                    'LOG',
+                    colors.cyan(message)
+                )} [:bar] :current/:total`,
                 { total: maxTicks, width: 30 }
             )
         }
