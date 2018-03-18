@@ -1,7 +1,9 @@
 const jsonfile = require('jsonfile')
 const fs = require('fs')
 
-function ensureDirExists(filepath) {
+import type { Graph, Node, Link } from './eth'
+
+function ensureDirExists(filepath: string) {
     const directory = filepath.substring(0, filepath.lastIndexOf('/') + 1)
 
     if (!fs.existsSync(directory)) {
@@ -9,7 +11,7 @@ function ensureDirExists(filepath) {
     }
 }
 
-function dumpJSON(filepath, graph) {
+function dumpJSON(filepath: string, graph: Graph) {
     ensureDirExists(filepath)
 
     jsonfile.writeFile(filepath, graph, { spaces: 2 }, err => {
@@ -17,10 +19,10 @@ function dumpJSON(filepath, graph) {
     })
 }
 
-function dumpPajek(filepath, { nodes, links }) {
+function dumpPajek(filepath: string, { nodes, links }: Graph) {
     ensureDirExists(filepath)
 
-    const nodesMap = new Map()
+    const nodesMap: Map<string, number> = new Map()
     let str = ''
 
     str += `*Vertices ${nodes.length}\n`
@@ -29,14 +31,14 @@ function dumpPajek(filepath, { nodes, links }) {
         return acc + `${index + 1} "${curr.id}"\n`
     }, '')
     str += '*arcs\n'
-    str += links.reduce(
-        (acc, curr, index) =>
-            acc +
-            `${nodesMap.get(curr.source)} ${nodesMap.get(curr.target)} ${
-                curr.amount
-            }\n`,
-        ''
-    )
+    str += links.reduce((acc, curr, index) => {
+        const source = nodesMap.get(curr.source)
+        const target = nodesMap.get(curr.target)
+        if (!source || !target) {
+            throw new Error('Source or target null')
+        }
+        return acc + `${source} ${target} ${curr.amount}\n`
+    }, '')
 
     fs.writeFileSync(filepath, str)
 }

@@ -1,26 +1,30 @@
 {
-    "name": "eth-net-viewer-server",
+    "name": "ethereum-galaxy-server",
     "version": "1.0.0",
-    "description": "Ethereum Network Visualizer - Server",
+    "description": "Ethereum Galaxy - Server",
     "main": "src/index.js",
     "scripts": {
-        "start": "node src/index.js",
+        "start": "node build/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "precommit": "pretty-quick --staged"
+        "precommit": "pretty-quick --staged",
+        "flow": "flow",
+        "flow:check": "flow check ./src/",
+        "flow:build": "flow-remove-types ./src/ -d ./build/ --all --pretty",
+        "flow:deps": "flow-typed install"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/loopingdoge/eth-net-viewer-server.git"
+        "url": "git+https://github.com/loopingdoge/ethereum-galaxy-server.git"
     },
     "author": "Looping Doge",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/loopingdoge/eth-net-viewer-server/issues"
+        "url": "https://github.com/loopingdoge/ethereum-galaxy-server/issues"
     },
-    "homepage": "https://github.com/loopingdoge/eth-net-viewer-server#readme",
+    "homepage": "https://github.com/loopingdoge/ethereum-galaxy-server#readme",
     "dependencies": {
         "colors": "^1.2.0",
-        "d3-force-3d": "^1.1.0",
+        "commander": "^2.15.0",
         "express": "^4.16.2",
         "jsonfile": "^4.0.0",
         "lodash": "^4.17.5",
@@ -31,6 +35,10 @@
         "web3": "^1.0.0-beta.30"
     },
     "devDependencies": {
+        "flow": "^0.2.3",
+        "flow-bin": "^0.68.0",
+        "flow-remove-types": "^1.2.3",
+        "flow-typed": "^2.4.0",
         "husky": "^0.14.3",
         "prettier": "1.11.1",
         "pretty-quick": "^1.4.1"

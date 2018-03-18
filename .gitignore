@@ -2,3 +2,5 @@ node_modules/
 logs/
 graphs/
 out/
+flow-typed/
+build/

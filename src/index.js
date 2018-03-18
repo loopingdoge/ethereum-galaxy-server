@@ -1,7 +1,7 @@
 const express = require('express')
 const commander = require('commander')
 
-const { eth, lastBlock } = require('./eth')
+const createEth = require('./eth')
 
 // const app = express()
 
@@ -15,6 +15,8 @@ const { eth, lastBlock } = require('./eth')
     if (!process.env.INFURA_API_KEY) {
         throw new Error('INFURA_API_KEY env variable not found')
     }
+
+    const { eth, lastBlock } = createEth(process.env.INFURA_API_KEY)
 
     const lastBlockNumber = await lastBlock()
 
