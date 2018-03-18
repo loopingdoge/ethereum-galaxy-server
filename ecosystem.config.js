@@ -16,7 +16,6 @@ module.exports = {
                 ETH_HOURS: 1
             }
         },
-
         {
             name: 'Eth 4h',
             script: './build/index.js',
@@ -27,6 +26,16 @@ module.exports = {
             env_production: {
                 NODE_ENV: 'production',
                 ETH_HOURS: 4
+            }
+        },
+        {
+            name: 'Web server',
+            script: './build/server.js',
+            env: {
+                NODE_ENV: 'development'
+            },
+            env_production: {
+                NODE_ENV: 'production'
             }
         }
     ]

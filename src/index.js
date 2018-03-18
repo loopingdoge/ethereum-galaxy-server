@@ -1,4 +1,3 @@
-const express = require('express')
 const schedule = require('node-schedule')
 
 const createEth = require('./eth')

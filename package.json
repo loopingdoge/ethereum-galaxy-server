@@ -27,6 +27,7 @@
         "express": "^4.16.2",
         "jsonfile": "^4.0.0",
         "lodash": "^4.17.5",
+        "mz": "^2.7.0",
         "ngraph.graph": "^0.0.14",
         "ngraph.offline.layout": "^1.1.1",
         "ngraph.tobinary": "^1.0.1",
