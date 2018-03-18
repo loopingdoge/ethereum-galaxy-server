@@ -1,13 +1,15 @@
 const express = require('express')
 const fs = require('mz/fs')
 
+import type { $Response } from 'express'
+
 const logger = require('./log')
 
 const app = express()
 
 app.use('/graphs', express.static('graphs'))
 
-app.get('/graphs', async (req, res) => {
+app.get('/graphs', async (req, res: $Response) => {
     logger.log('/graphs request')
     const folders = await fs.readdir('./graphs')
     const listPromises = folders.map(async folder => {

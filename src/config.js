@@ -1,6 +1,6 @@
 const { ensureDirExists } = require('./files')
 
-const howOftenToRun = process.env.ETH_HOURS
+const howOftenToRun = process.env.ETH_HOURS || 1
 
 const baseFilename = `eth-${howOftenToRun}/${new Date().getHours()}`
 
