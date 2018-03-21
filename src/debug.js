@@ -33,7 +33,7 @@ recurrenceRule.hour = Array(Math.ceil(24 / howOftenToRun))
 recurrenceRule.minute = 20
 
 async function start() {
-    const { eth, lastBlock } = createEth(infuraApiKey)
+    const { scanBlocks, lastBlock } = createEth(infuraApiKey)
 
     const lastBlockNumber = await lastBlock()
 
@@ -42,7 +42,7 @@ async function start() {
         end: lastBlockNumber
     }
 
-    eth(blockRange)
+    scanBlocks(blockRange)
 }
 
 start()

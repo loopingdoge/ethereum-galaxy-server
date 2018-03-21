@@ -24,6 +24,7 @@
     "homepage": "https://github.com/loopingdoge/ethereum-galaxy-server#readme",
     "dependencies": {
         "colors": "^1.2.0",
+        "commander": "^2.15.1",
         "express": "^4.16.2",
         "jsonfile": "^4.0.0",
         "lodash": "^4.17.5",
