@@ -4,14 +4,18 @@ const fs = require('mz/fs')
 import type { $Response } from 'express'
 
 const logger = require('./log')
+const { ensureDirExists } = require('./files')
 
 const app = express()
 const port = 8888
+
+ensureDirExists('./graphs')
 
 app.use('/graphs', express.static('graphs'))
 
 app.get('/graphs', async (req, res: $Response) => {
     logger.log('/graphs request')
+
     const folders = await fs.readdir('./graphs')
     const listPromises = folders.map(async folder => {
         const subfolders = await fs.readdir(`./graphs/${folder}`)
