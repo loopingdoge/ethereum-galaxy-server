@@ -8,7 +8,7 @@ const {
     pajekFilename,
     ngraphBasePath
 } = require('./config')
-const { dumpJSON, dumpPajek } = require('./files')
+const { dumpJSON, dumpPajek, ensureDirExists } = require('./files')
 const logger = require('./log')
 const calculateLayout = require('./layout')
 const calculateNgraphLayout = require('./ngraph-layout')
@@ -126,10 +126,11 @@ module.exports = (infuraApiKey: string) => {
         const graph = { nodes, links: transactions }
 
         if (doLayout) {
+            ensureDirExists(ngraphBasePath())
             const ngraph = await calculateNgraphLayout(graph, () => {})
 
             saveGraph(ngraph, {
-                outDir: ngraphBasePath,
+                outDir: ngraphBasePath(),
                 labels: `labels.json`,
                 meta: `meta.json`,
                 links: `links.bin`
@@ -138,11 +139,11 @@ module.exports = (infuraApiKey: string) => {
 
         logger.log('Exporting the graph to JSON...')
 
-        dumpJSON(jsonFilename, graph)
+        dumpJSON(jsonFilename(), graph)
 
         logger.log('Exporting the graph to Pajek...')
 
-        dumpPajek(pajekFilename, graph)
+        dumpPajek(pajekFilename(), graph)
 
         logger.log('Finished, cya')
     }

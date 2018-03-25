@@ -2,6 +2,7 @@ const fs = require('fs')
 const colors = require('colors/safe')
 const ProgressBar = require('progress')
 
+const { ensureDirExists } = require('./files')
 const { logFilename } = require('./config')
 
 type Level = 'LOG' | 'ERROR'
@@ -22,6 +23,7 @@ function coloredLog(level: Level, str: string) {
 }
 
 function createLogStream(path: string) {
+    ensureDirExists(path)
     return fs.createWriteStream(path)
 }
 
@@ -52,4 +54,4 @@ function createLogger(path: string) {
     }
 }
 
-module.exports = createLogger(logFilename)
+module.exports = createLogger(logFilename())
