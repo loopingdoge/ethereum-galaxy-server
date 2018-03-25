@@ -6,6 +6,7 @@ import type { $Response } from 'express'
 const logger = require('./log')
 
 const app = express()
+const port = 8888
 
 app.use('/graphs', express.static('graphs'))
 
@@ -28,8 +29,8 @@ app.get('/graphs', async (req, res: $Response) => {
     res.send(JSON.stringify(response))
 })
 
-app.listen(3000, () => {
-    logger.log('Web server listening on port 3000')
+app.listen(port, () => {
+    logger.log(`Web server listening on port ${port}`)
     logger.log('Available APIs:')
     logger.log('/graphs')
     logger.log('/graphs/eth-x/y/{ graph.json , graph.net }')

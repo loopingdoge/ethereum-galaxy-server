@@ -73,7 +73,7 @@ module.exports = (infuraApiKey: string) => {
         }
     }
 
-    async function eth(range: Range) {
+    async function scanBlocks(range: Range, doLayout: boolean = true) {
         logger.log('Retrieving blocks...')
         const blocksIndexes = Array(range.end - range.start)
             .fill(1)
@@ -125,20 +125,16 @@ module.exports = (infuraApiKey: string) => {
 
         const graph = { nodes, links: transactions }
 
-        const ngraph = await calculateNgraphLayout(graph, () => {})
+        if (doLayout) {
+            const ngraph = await calculateNgraphLayout(graph, () => {})
 
-        saveGraph(ngraph, {
-            outDir: ngraphBasePath,
-            labels: `labels.json`,
-            meta: `meta.json`,
-            links: `links.bin`
-        })
-
-        // const progressBar = logger.progress('Calculating layout', 300)
-        // const graph = await calculateLayout(
-        //     { nodes, links: minifiedTransactions },
-        //     () => progressBar.tick()
-        // )
+            saveGraph(ngraph, {
+                outDir: ngraphBasePath,
+                labels: `labels.json`,
+                meta: `meta.json`,
+                links: `links.bin`
+            })
+        }
 
         logger.log('Exporting the graph to JSON...')
 
@@ -162,7 +158,7 @@ module.exports = (infuraApiKey: string) => {
     }
 
     return {
-        eth,
+        scanBlocks,
         lastBlock
     }
 }
