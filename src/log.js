@@ -48,7 +48,7 @@ function createLogger(path: string) {
                     'LOG',
                     colors.cyan(message)
                 )} [:bar] :current/:total`,
-                { total: maxTicks, width: 30 }
+                { total: maxTicks, head: '>', width: 30 }
             )
         }
     }
