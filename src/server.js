@@ -9,7 +9,7 @@ const { ensureDirExists } = require('./files')
 const app = express()
 const port = 8888
 
-ensureDirExists('./graphs')
+ensureDirExists('./graphs/')
 
 app.use('/graphs', express.static('graphs'))
 
