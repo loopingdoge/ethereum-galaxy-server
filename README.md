@@ -1,2 +1,2 @@
-# eth-net-viewer-server
-Ethereum Network Visualizer - Server
+# Ethereum Galaxy - Server
+Visualizing Ethereum transactions as a 3D galaxy
