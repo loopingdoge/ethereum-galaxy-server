@@ -126,11 +126,12 @@ module.exports = (infuraApiKey: string) => {
         const graph = { nodes, links: transactions }
 
         if (doLayout) {
-            ensureDirExists(ngraphBasePath())
-            const ngraph = await calculateNgraphLayout(graph, () => {})
+            const ngraphOutDirPath = ngraphBasePath()
+            ensureDirExists(ngraphOutDirPath)
+            const ngraph = await calculateNgraphLayout(graph, ngraphOutDirPath)
 
             saveGraph(ngraph, {
-                outDir: ngraphBasePath(),
+                outDir: ngraphOutDirPath,
                 labels: `labels.json`,
                 meta: `meta.json`,
                 links: `links.bin`

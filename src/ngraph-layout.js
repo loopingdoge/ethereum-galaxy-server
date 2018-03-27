@@ -1,11 +1,9 @@
 const createGraph = require('ngraph.graph')
 const createLayout = require('ngraph.offline.layout')
 
-const { ngraphBasePath } = require('./config')
-
 import type { Graph } from './eth'
 
-async function calculateLayout(graph: Graph, onTick: () => any) {
+async function calculateLayout(graph: Graph, outDirPath: string) {
     const g = createGraph()
 
     graph.links.forEach(l => {
@@ -15,7 +13,7 @@ async function calculateLayout(graph: Graph, onTick: () => any) {
     const layout = createLayout(g, {
         iterations: 500,
         saveEach: 500,
-        outDir: ngraphBasePath
+        outDir: outDirPath
     })
 
     layout.run()
