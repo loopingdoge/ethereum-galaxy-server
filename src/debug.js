@@ -26,12 +26,6 @@ if (!process.env.ETH_HOURS) {
 const infuraApiKey = process.env.INFURA_API_KEY
 const howOftenToRun = parseInt(process.env.ETH_HOURS)
 
-const recurrenceRule = new schedule.RecurrenceRule()
-recurrenceRule.hour = Array(Math.ceil(24 / howOftenToRun))
-    .fill(1)
-    .map((one, index) => index * howOftenToRun)
-recurrenceRule.minute = 20
-
 async function start() {
     const { scanBlocks, lastBlock } = createEth(infuraApiKey)
 
