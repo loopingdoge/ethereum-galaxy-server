@@ -10,7 +10,6 @@ const {
 } = require('./config')
 const { dumpJSON, dumpPajek, ensureDirExists } = require('./files')
 const logger = require('./log')
-const calculateLayout = require('./layout')
 const calculateNgraphLayout = require('./ngraph-layout')
 
 type Range = {
