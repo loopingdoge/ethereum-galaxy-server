@@ -11,6 +11,12 @@ const port = 8888
 
 ensureDirExists('./graphs/')
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', 'http://www.devid.io')
+    res.header('Access-Control-Allow-Methods', 'GET')
+    next()
+})
+
 app.use('/graphs', express.static('graphs'))
 
 app.get('/graphs', async (req, res: $Response) => {
