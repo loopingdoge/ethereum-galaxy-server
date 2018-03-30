@@ -1,27 +1,30 @@
 const jsonfile = require('jsonfile')
 const fs = require('fs')
 
-import type { Graph, Node, Link } from './eth'
+const logger = require('./log')
+const { ensureDirExists } = require('./utils')
 
-function ensureDirExists(filepath: string) {
-    const subdirsTokens = filepath.split('/')
-    const subdirs = subdirsTokens.slice(1, subdirsTokens.length - 1)
-    const directoriesFullPath = subdirs.map((_, i, a) =>
-        a.slice(0, i + 1).join('/')
-    )
-
-    directoriesFullPath.forEach(directory => {
-        if (!fs.existsSync(directory)) {
-            fs.mkdirSync(directory)
-        }
-    })
-}
+import type { Graph, Node, Link, Range } from './eth'
 
 function dumpJSON(filepath: string, graph: Graph) {
     ensureDirExists(filepath)
 
-    jsonfile.writeFile(filepath, graph, { spaces: 2 }, err => {
-        console.error(err)
+    jsonfile.writeFile(filepath, graph, err => {
+        if (err) logger.error(err)
+    })
+}
+
+function dumpInfo(filepath: string, { nodes, links }: Graph, range: Range) {
+    ensureDirExists(filepath)
+
+    const info = {
+        range,
+        nodes_number: nodes.length,
+        links_number: links.length
+    }
+
+    jsonfile.writeFile(filepath, info, { spaces: 2 }, err => {
+        if (err) logger.error(err)
     })
 }
 
@@ -46,11 +49,14 @@ function dumpPajek(filepath: string, { nodes, links }: Graph) {
         return acc + `${source} ${target} ${curr.amount}\n`
     }, '')
 
-    fs.writeFileSync(filepath, str)
+    fs.writeFile(filepath, str, err => {
+        if (err) logger.error(err)
+    })
 }
 
 module.exports = {
     dumpJSON,
+    dumpInfo,
     dumpPajek,
     ensureDirExists
 }

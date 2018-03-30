@@ -4,14 +4,14 @@ const fs = require('mz/fs')
 import type { $Response } from 'express'
 
 const logger = require('./log')
-const { ensureDirExists } = require('./files')
+const { ensureDirExists } = require('./utils')
 
 const app = express()
 const port = 8888
 
 ensureDirExists('./graphs/')
 
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://www.devid.io')
     res.header('Access-Control-Allow-Methods', 'GET')
     next()

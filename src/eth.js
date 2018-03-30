@@ -2,17 +2,19 @@ const Web3 = require('web3')
 const _ = require('lodash')
 const saveGraph = require('ngraph.tobinary')
 
+const { ensureDirExists } = require('./utils')
 const {
     baseFilename,
     jsonFilename,
+    infoFilename,
     pajekFilename,
     ngraphBasePath
 } = require('./config')
-const { dumpJSON, dumpPajek, ensureDirExists } = require('./files')
+const { dumpJSON, dumpPajek, dumpInfo } = require('./files')
 const logger = require('./log')
 const calculateNgraphLayout = require('./ngraph-layout')
 
-type Range = {
+export type Range = {
     start: number,
     end: number
 }
@@ -140,6 +142,10 @@ module.exports = (infuraApiKey: string) => {
         logger.log('Exporting the graph to JSON...')
 
         dumpJSON(jsonFilename(), graph)
+
+        logger.log('Export the graph infos...')
+
+        dumpInfo(infoFilename(), graph, range)
 
         logger.log('Exporting the graph to Pajek...')
 
